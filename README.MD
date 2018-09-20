@@ -27,8 +27,8 @@ Simply change those to your desired parameters. If you bin by hours, you'll want
 ## Example outputs
 
 Example from my file server with lots of Drives
-![File Server](images/2018-09-18_13-56-05.png)
+![File Server](images/2018-09-19_15-02-17.png)
 
 Main output if you don't have a bunch of servers with extra drives
-![File Server](images/2018-09-19_15-13-18.png)
+![FMain Output](images/2018-09-19_15-13-18.png)
 
