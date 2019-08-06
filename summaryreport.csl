@@ -1,18 +1,15 @@
 //set report time frame
 let Time = 35d;
- 
 //set report bin time frame
 let Bin = 1d;
- 
 //set date format
 let Date = 'MM-dd-yyyy';
- 
 //Get CPU Max, Min and Avg
 let CPU = Perf
 | where ObjectName == "Processor"
               and CounterName == "% Processor Time"
               and InstanceName == "_Total"
-              and TimeGenerated &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt; ago(Time)
+              and TimeGenerated > ago(Time)
 | summarize AvgCPU = avg(CounterValue)
                      , MinCPU = min(CounterValue)
                      , MaxCPU = max(CounterValue) by Computer, bin(TimeGenerated, Bin);
@@ -21,7 +18,7 @@ let CPU = Perf
 let Memory = Perf
 | where ObjectName == "Memory"
               and CounterName == "% Committed Bytes In Use"
-              and TimeGenerated &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt; ago(Time)
+              and TimeGenerated > ago(Time)
 | summarize AvgMemory = avg(CounterValue)
            , MinMemory = min(CounterValue)
            , MaxMemory = max(CounterValue) by Computer, bin(TimeGenerated, Bin);
@@ -35,15 +32,15 @@ let Disk = Perf
 | where (ObjectName == "LogicalDisk" and CounterName == "Avg. Disk sec/Write"
                 and InstanceName != "HarddiskVolume1"
                 and InstanceName != "_Total"
-                and TimeGenerated &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt; ago(Time))
+                and TimeGenerated > ago(Time))
           or (ObjectName == "LogicalDisk" and CounterName == "Avg. Disk sec/Read"
                 and InstanceName != "HarddiskVolume1"
                 and InstanceName != "_Total"
-                and TimeGenerated &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt; ago(Time))
+                and TimeGenerated > ago(Time))
           or (ObjectName == "LogicalDisk" and CounterName == "% Free Space"
                 and InstanceName != "HarddiskVolume1"
                 and InstanceName != "_Total"
-                and TimeGenerated &amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt; ago(Time))       
+                and TimeGenerated > ago(Time))       
 | summarize avg(CounterValue) by Computer, InstanceName
                       , DiskMetrics=CounterName, bin(TimeGenerated, Bin)
 | evaluate pivot(InstanceName, avg(avg_CounterValue));
